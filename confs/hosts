@@ -1,0 +1,7 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+# Hosts servidores do Cluster:
+10.0.0.3        elliotlab01     elliotlab01.scplab.com.br
+10.0.0.4        elliotlab02     elliotlab02.scplab.com.br
+10.0.0.5        elliotlab03     elliotlab03.scplab.com.br
