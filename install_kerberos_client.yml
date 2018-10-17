@@ -1,0 +1,68 @@
+################################################################
+#                                                              #
+#         Playbook Ansible - Configuração Kerberos Client      #
+#         Criado por: Anselmo Borges e Luiz Marsoleta          #
+#         OBS: O inicio da riqueza                             #
+#         Data de criação: 17.10.2018                          #
+#         Ultima atualização: 17.10.2018                       #
+#                                                              #
+################################################################                                    
+
+- name: "Playbook de instalação Kerberos Workstation (Client)"
+  hosts: clusterzao
+
+  tasks: 
+
+    - name: "Movimentando o RPMS"
+      copy:
+        src: confs/
+        dest: /tmp/
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Instalando o repositorio EPEL"
+      yum:
+        name: /tmp/epel-release-latest-7.noarch.rpm
+        state: present
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Atualizando todos os repositórios do YUM"
+      yum:
+        name: "*"
+        state: latest
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Instalando o krb5-libs"
+      yum:
+        name: /tmp/krb5-libs-1.15.1-18.el7.x86_64.rpm
+        state: present
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Instalando o krb5-workstation"
+      yum:
+        name: /tmp/krb5-workstation-1.15.1-18.el7.x86_64.rpm
+        state: present
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando krb5.conf (workstation)"
+      copy:
+        src: confs/krb5.conf
+        dest: /etc/
+        owner: root
+        group: root
+        mode: 0644   
+      become: yes
+      become_method: sudo
+      become_user: root

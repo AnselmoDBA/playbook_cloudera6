@@ -1,0 +1,160 @@
+################################################################
+#                                                              #
+#         Playbook Ansible - Configuração Cloudera 6           #
+#         Criado por: Anselmo Borges                           #
+#         Data de criação: 14.10.2018                          #
+#         Ultima atualização: 14.10.2018                       #
+#                                                              #
+################################################################                                    
+
+- name: "Playbook de instalação Cloudera 6"
+  hosts: elliot04
+
+  tasks: 
+    - name: "Adicionando repositório da Cloudera"
+      yum_repository:
+        name: cloudera-manager.repo
+        description: Repositório do Cloudera 6
+        baseurl: https://archive.cloudera.com/cm6/6.0.0/redhat7/yum/
+        gpgkey: https://archive.cloudera.com/cm6/6.0.0/redhat7/yum/RPM-GPG-KEY-cloudera
+        gpgcheck: yes
+        enabled: yes
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Atualizando todos os repositórios do YUM"
+      yum: 
+        name: "*"
+        state: latest
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: Instala pre-reqs via YUM
+      yum: name={{ item }} 
+      state: latest
+      with_items:
+        - wget
+        - telnet
+        - oracle-j2sdk1.8
+        - ntp
+        - mysql-connector-java.noarch
+        - mariadb-server
+        - dstat
+        - nscd
+        - firewalld
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando Hosts"
+      copy:
+        src: confs/hosts
+        dest: /etc/
+        owner: root
+        group: root
+        mode: 0644   
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando sysctl.conf"
+      copy:
+        src: confs/sysctl.conf
+        dest: /etc/
+        owner: root
+        group: root
+        mode: 0644   
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando limits.conf"
+      copy:
+        src: confs/limits.conf
+        dest: /etc/security/
+        owner: root
+        group: root
+        mode: 0644   
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Desabilitando o Swappiness"
+      command: echo 1 > /proc/sys/vm/swappiness
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Desabilitando SELINUX sem reboot"
+      shell: /usr/sbin/setenforce 0
+      become: yes      
+      become_method: sudo
+      become_user: root
+
+    - name: "Desabilitando o SELINUX"
+      copy: 
+        src: confs/selinux
+        dest: /etc/selinux/config
+        mode: 0644   
+        owner: root
+        group: root
+      become: yes
+      become_method: sudo
+      become_user: root
+
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Desabilitando o Transparent Hugepages 2"
+      command: echo never > /sys/kernel/mm/transparent_hugepage/defrag
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Parando o Firewall"
+      service: 
+        name: firewalld
+        state: stopped 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Desabilitando o Firewall"
+      service: 
+        name: firewalld
+        enabled: no
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Configurando o NTP"
+      command: echo "server pool.ntp.br iburst" >> /etc/ntp.conf
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Restart o serviço do NTP"
+      service: 
+        name: ntpd
+        state: restarted 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Restart o serviço do NSCD"
+      service: 
+        name: nscd
+        state: restarted 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Restart do servidor"
+      command: /sbin/shutdown -r +1
+      become: yes
+      become_method: sudo
+      become_user: root
+

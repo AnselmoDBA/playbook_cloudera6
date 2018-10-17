@@ -1,0 +1,8 @@
+127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
+#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+
+# Hosts servidores do Cluster:
+10.158.0.2		angela01.spclab.io	angela01
+10.158.0.3		angela02.spclab.io	angela02
+10.158.0.4		angela03.spclab.io      angela03
+

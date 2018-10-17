@@ -1,0 +1,57 @@
+################################################################
+#                                                              #
+#         Playbook Ansible - Configuração Cloudera 5 (Master)  #
+#         Criado por: Anselmo Borges                           #
+#         Data de criação: 17.10.2018                          #
+#         Ultima atualização: 17.10.2018                       #
+#                                                              #
+################################################################                                    
+
+- name: "Playbook de instalação Cloudera 5 - Node Master"
+  hosts: rj-phy-hdp-01
+
+  tasks: 
+    - name: Instala pre-reqs via YUM
+      yum: name={{ item }} 
+      state: latest
+      with_items:
+        - cloudera-manager-daemons
+        - cloudera-manager-agent
+        - cloudera-manager-server
+      become: yes
+      become_method: sudo
+      become_user: root
+
+#    - name: "Movimentando script mysql"
+#      copy:
+#        src: confs/script.sql
+#        dest: /tmp/script.sql
+#        owner: root
+#        group: root
+#        mode: 0644   
+#      become: yes
+#      become_method: sudo
+#      become_user: root
+#
+#    - name: "Iniciando o MariaDB"
+#      service: 
+#        name: mariadb
+#        state: started
+#      become: yes
+#      become_method: sudo
+#      become_user: root
+#
+#    - name: "Habilitando o MariaDB"
+#      service: 
+#        name: mariadb
+#        enabled: yes
+#      become: yes
+#      become_method: sudo
+#      become_user: root
+#
+#    - name: "Rodando o script de criação do banco"
+#      command: mysql -uroot < /tmp/script.sql
+#      become: yes
+#      become_method: sudo
+#      become_user: root
+

@@ -1,7 +1,16 @@
 127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-#::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
 
-# Hosts servidores do Cluster:
-10.0.0.3        elliotlab01     elliotlab01.scplab.com.br
-10.0.0.4        elliotlab02     elliotlab02.scplab.com.br
-10.0.0.5        elliotlab03     elliotlab03.scplab.com.br
+### Cluster cloudera Pika das galaxias
+10.198.12.131 	rj-phy-hdp-01.spcdc.br	rj-phy-hdp-01
+10.198.12.132 	rj-phy-hdp-02.spcdc.br	rj-phy-hdp-02
+10.198.12.133 	rj-phy-hdp-03.spcdc.br	rj-phy-hdp-03
+10.198.12.134 	rj-phy-hdp-04.spcdc.br	rj-phy-hdp-04
+10.198.12.135 	rj-phy-hdp-05.spcdc.br	rj-phy-hdp-05
+10.198.12.136 	rj-phy-hdp-06.spcdc.br	rj-phy-hdp-06
+10.198.12.137 	rj-phy-hdp-07.spcdc.br	rj-phy-hdp-07
+10.198.12.138 	rj-phy-hdp-08.spcdc.br	rj-phy-hdp-08
+10.198.12.139 	rj-phy-hdp-09.spcdc.br	rj-phy-hdp-09
+10.198.12.140 	rj-phy-hdp-10.spcdc.br	rj-phy-hdp-10
+10.198.12.141 	rj-phy-hdp-11.spcdc.br	rj-phy-hdp-11
+

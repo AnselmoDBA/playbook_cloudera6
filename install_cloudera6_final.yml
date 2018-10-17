@@ -8,7 +8,7 @@
 ################################################################                                    
 
 - name: "Playbook de instalação Cloudera 6 - Node Master"
-  hosts: angela01
+  hosts: elliot01
 
   tasks: 
     - name: Instala pre-reqs via YUM

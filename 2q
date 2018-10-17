@@ -1,31 +1,42 @@
 ################################################################
 #                                                              #
-#         Playbook Ansible - Configuração Cloudera (Master)    #
+#         Playbook Ansible - Configuração Cloudera 6           #
 #         Criado por: Anselmo Borges                           #
-#         Data de criação: 23.09.2018                          #
-#         Ultima atualização: 23.09.2018                       #
+#         Data de criação: 14.10.2018                          #
+#         Ultima atualização: 14.10.2018                       #
 #                                                              #
 ################################################################                                    
 
-- name: "Playbook de instalação Cloudera 6 - Node Master"
-  hosts: angela01
+- name: "Playbook de instalação Cloudera 6"
+  hosts: clusterzao
 
-  tasks: 
+    - name: "Atualizando todos os repositórios do YUM"
+      yum: 
+        name: "*"
+        state: latest
+      become: true
+      become_method: sudo
+      become_user: root
+
     - name: Instala pre-reqs via YUM
       yum: name={{ item }} 
       state: latest
       with_items:
-        - cloudera-manager-daemons
-        - cloudera-manager-agent
-        - cloudera-manager-server
+        - wget
+        - telnet
+        - ntp
+        - mariadb-server
+        - dstat
+        - nscd
+        - firewalld
       become: yes
       become_method: sudo
       become_user: root
 
-    - name: "Movimentando script mysql"
+    - name: "Movimentando Hosts"
       copy:
-        src: confs/script.sql
-        dest: /tmp/script.sql
+        src: confs/hosts
+        dest: /etc/
         owner: root
         group: root
         mode: 0644   
@@ -33,25 +44,20 @@
       become_method: sudo
       become_user: root
 
-    - name: "Iniciando o MariaDB"
+    - name: "Parando o Firewall"
       service: 
-        name: mariadb
-        state: started
+        name: firewalld
+        state: stopped 
       become: yes
       become_method: sudo
       become_user: root
 
-    - name: "Habilitando o MariaDB"
+    - name: "Desabilitando o Firewall"
       service: 
-        name: mariadb
-        enabled: yes
+        name: firewalld
+        enabled: no
       become: yes
       become_method: sudo
       become_user: root
 
-    - name: "Rodando o script de criação do banco"
-      command: mysql -uroot < /tmp/script.sql
-      become: yes
-      become_method: sudo
-      become_user: root
 
