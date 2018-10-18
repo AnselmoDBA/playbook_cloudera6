@@ -3,12 +3,12 @@
 #         Playbook Ansible - Configuração Cloudera (Master)    #
 #         Criado por: Anselmo Borges                           #
 #         Data de criação: 23.09.2018                          #
-#         Ultima atualização: 23.09.2018                       #
+#         Ultima atualização: 18.10.2018                       #
 #                                                              #
 ################################################################                                    
 
 - name: "Playbook de instalação Cloudera 6 - Node Master"
-  hosts: elliot01
+  hosts: gideon01
 
   tasks: 
     - name: Instala pre-reqs via YUM
@@ -49,9 +49,37 @@
       become_method: sudo
       become_user: root
 
+    - name: "Configurando a segurança do MariaDB e setando a senha"
+      shell: /bin/echo -e "spclab\nY\nspclab\nspclab\nY\nY\nY" | mysql_secure_installation
+      become: yes      
+      become_method: sudo
+      become_user: root
+
     - name: "Rodando o script de criação do banco"
-      command: mysql -uroot < /tmp/script.sql
+      shell: mysql -uroot -pspclab < /tmp/script.sql
       become: yes
       become_method: sudo
       become_user: root
+
+#    - name: "Habilitando o AUTO TLS"
+#      shell: JAVA_HOME=/usr/java/jdk1.8.0_141-cloudera /opt/cloudera/cm-agent/bin/certmanager setup --location /opt/cloudera/CMCA --configure-services
+#      become: yes
+#      become_method: sudo
+#      become_user: root
+
+    - name: "Criando o schema SCM no MariaDB"
+      shell: echo -e "scm" | /opt/cloudera/cm/schema/scm_prepare_database.sh mysql scm scm
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Iniciando o Cloudera Manager"
+      service: 
+        name: cloudera-scm-server
+        state: started
+      become: yes
+      become_method: sudo
+      become_user: root
+
+
 

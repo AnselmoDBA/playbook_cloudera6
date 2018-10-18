@@ -8,7 +8,7 @@
 ################################################################                                    
 
 - name: "Playbook de instalação Cloudera 6"
-  hosts: elliot04
+  hosts: gideons
 
   tasks: 
     - name: "Adicionando repositório da Cloudera"
@@ -130,6 +130,14 @@
       become_method: sudo
       become_user: root
 
+    - name: "Desabilitando o Tuned"
+      service: 
+        name: tuned
+        enabled: no
+      become: yes
+      become_method: sudo
+      become_user: root
+
     - name: "Configurando o NTP"
       command: echo "server pool.ntp.br iburst" >> /etc/ntp.conf
       become: yes
@@ -140,6 +148,14 @@
       service: 
         name: ntpd
         state: restarted 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Habilitando o NTPD"
+      service: 
+        name: ntpd
+        enabled: yes
       become: yes
       become_method: sudo
       become_user: root

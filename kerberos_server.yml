@@ -1,0 +1,95 @@
+################################################################
+#                                                              #
+#         Playbook Ansible - Configuração Kerberos Server      #
+#         Criado por: Anselmo Borges/JP zica do /n é enter     #
+#         Data de criação: 18.10.2018                          #
+#         Ultima atualização: 18.10.2018                       #
+#                                                              #
+################################################################                                    
+
+- name: "Playbook de configuração do Kerberos Server"
+  hosts: gideon01
+  tasks:
+
+    - name: "Atualizando todos os repositórios do YUM"
+      yum: 
+        name: "*"
+        state: latest
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Instala Kerberus Server"
+      yum: name={{ item }} 
+      state: latest
+      with_items:
+        - krb5-server
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando kdc.conf (Server)"
+      copy:
+        src: confs/kdc.conf
+        dest: /var/kerberos/krb5kdc/kdc.conf
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Criando o database e setando uma senha"
+      shell: /bin/echo -e "spclab\nspclab" | /usr/sbin/kdb5_util create -s
+      become: yes      
+      become_method: sudo
+      become_user: root
+
+    - name: "Criando o user Cloudera SCM"
+      shell: /bin/echo -e "addprinc cloudera-scm@SPCLAB.INFRA\nspclab\nspclab" | kadmin.local
+      become: yes      
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando kadm5.acl (dá admin pro Cloudera-scm)"
+      copy:
+        src: confs/kadm5.acl
+        dest: /var/kerberos/krb5kdc/kadm5.acl
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Iniciando o krb5kdc"
+      service: 
+        name: krb5kdc
+        state: started 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Habilitando o krb5kdc"
+      service: 
+        name: krb5kdc
+        enabled: yes
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Iniciando o kadmin"
+      service: 
+        name: kadmin
+        state: started 
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Habilitando o kadmin"
+      service: 
+        name: kadmin
+        enabled: yes
+      become: yes
+      become_method: sudo
+      become_user: root

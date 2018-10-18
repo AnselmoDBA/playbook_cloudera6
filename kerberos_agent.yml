@@ -1,0 +1,43 @@
+################################################################
+#                                                              #
+#         Playbook Ansible - Configuração Kerberos             #
+#         Criado por: Anselmo Borges                           #
+#         Data de criação: 18.10.2018                          #
+#         Ultima atualização: 18.10.2018                       #
+#                                                              #
+################################################################                                    
+
+- name: "Playbook de configuração do Kerberus Workstation (Agents)"
+  hosts: gideons
+  tasks:
+
+    - name: "Atualizando todos os repositórios do YUM"
+      yum: 
+        name: "*"
+        state: latest
+      become: true
+      become_method: sudo
+      become_user: root
+
+    - name: "Instala Kerberus Workstation e libs nos agents"
+      yum: name={{ item }} 
+      state: latest
+      with_items:
+        - krb5-workstation
+        - krb5-libs
+      become: yes
+      become_method: sudo
+      become_user: root
+
+    - name: "Movimentando krb5.conf (workstation)"
+      copy:
+        src: confs/krb5.conf
+        dest: /etc/
+        owner: root
+        group: root
+        mode: 0644
+      become: yes
+      become_method: sudo
+      become_user: root
+
+
