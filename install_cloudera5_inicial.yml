@@ -8,15 +8,15 @@
 ################################################################                                    
 
 - name: "Playbook de instalação Cloudera 5"
-  hosts: clusterzao
+  hosts: BIG_DATA_DEV
 
   tasks: 
     - name: "Adicionando repositório da Cloudera"
       yum_repository:
         name: cloudera-manager.repo
         description: Repositório do Cloudera 5
-        baseurl: https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/cloudera-manager.repo
-        gpgkey: https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/5.15.1/RPM-GPG-KEY-cloudera
+        baseurl: https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/cloudera-cdh5.repo
+        gpgkey: https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/RPM-GPG-KEY-cloudera
         gpgcheck: yes
         enabled: yes
       become: yes
@@ -24,7 +24,7 @@
       become_user: root
 
     - name: "Habilitando o chave do Repositorio"
-      command: rpm --import https://archive.cloudera.com/cm5/redhat/7/x86_64/cm/RPM-GPG-KEY-cloudera
+      command: rpm --import https://archive.cloudera.com/cdh5/redhat/7/x86_64/cdh/RPM-GPG-KEY-cloudera
       become: yes
       become_method: sudo
       become_user: root
@@ -43,14 +43,13 @@
       with_items:
         - cloudera-manager-agent
         - cloudera-manager-daemons
-#        - telnet
-#        - oracle-j2sdk1.8
-#        - ntp
-#        - mysql-connector-java.noarch
-#        - mariadb-server
-#        - dstat
-#        - nscd
-#        - firewalld
+        #- telnet.x86_64
+        #- oracle-j2sdk1.8
+        #- ntp
+        #- mysql-connector-java.noarch
+        #- mariadb
+        #- dstat
+        #- nscd
 #      become: yes
 #      become_method: sudo
 #      become_user: root

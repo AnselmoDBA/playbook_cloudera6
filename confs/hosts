@@ -1,6 +1,10 @@
-127.0.0.1   localhost localhost.localdomain localhost4 localhost4.localdomain4
-::1         localhost localhost.localdomain localhost6 localhost6.localdomain6
+### Novas maquinas de dev:
+10.198.225.10 sp-vmw-hdp-dev-01.spcdc.br sp-vmw-hdp-dev-01
+10.198.225.11 sp-vmw-hdp-dev-02.spcdc.br sp-vmw-hdp-dev-02
+10.198.225.12 sp-vmw-hdp-dev-03.spcdc.br sp-vmw-hdp-dev-03
+10.198.225.13 sp-vmw-hdp-dev-04.spcdc.br sp-vmw-hdp-dev-04
+10.198.225.14 sp-vmw-hdp-dev-05.spcdc.br sp-vmw-hdp-dev-05
+10.198.225.15 sp-vmw-hdp-dev-06.spcdc.br sp-vmw-hdp-dev-06
+10.198.225.16 sp-vmw-hdp-dev-07.spcdc.br sp-vmw-hdp-dev-07
+10.198.225.17 sp-vmw-hdp-dev-08.spcdc.br sp-vmw-hdp-dev-08
 
-### Cluster Cloudera
-10.199.6.19 	gideon01.spclab.io	gideon01
-10.199.6.20 	gideon02.spclab.io	gideon02
