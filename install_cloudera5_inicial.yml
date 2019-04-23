@@ -8,7 +8,7 @@
 ################################################################                                    
 
 - name: "Playbook de instalação Cloudera 5"
-  hosts: BIG_DATA_DEV
+  hosts: ndevs 
 
   tasks: 
     - name: "Adicionando repositório da Cloudera"
@@ -39,10 +39,11 @@
 
     - name: Instala pre-reqs via YUM
       yum: name={{ item }} 
-      state: latest
       with_items:
         - cloudera-manager-agent
         - cloudera-manager-daemons
+          #state: latest
+          #skip_broken: yes
         #- telnet.x86_64
         #- oracle-j2sdk1.8
         #- ntp
@@ -50,9 +51,10 @@
         #- mariadb
         #- dstat
         #- nscd
-#      become: yes
-#      become_method: sudo
-#      become_user: root
+      become: yes
+      become_method: sudo
+      become_user: root
+
 
     - name: "Movimentando Hosts"
       copy:
